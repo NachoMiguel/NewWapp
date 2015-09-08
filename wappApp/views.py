@@ -1,7 +1,7 @@
 import re
 import datetime
 
-from django.shortcuts import HttpResponse, render
+from django.shortcuts import render
 
 
 def index(request):
@@ -12,7 +12,12 @@ def index(request):
     dates = search_date(data)
     users_and_when_users_talk = get_users_names(data)
 
-    return render(request, 'wappApp/index.html', context={'dates': dates, 'users': users_and_when_users_talk})
+    w_u_t = list(users_and_when_users_talk[0])
+
+    user_talks_count = get_users_talks(data, w_u_t)
+
+    return render(request, 'wappApp/index.html', context={'dates': dates, 'users': users_and_when_users_talk,
+                                                          'talks': user_talks_count})
 
 
 def search_date(data):
@@ -72,3 +77,23 @@ def get_users_names(data):
         list_users_and_string_users = [string_objects_users, just_users]
 
         return list_users_and_string_users
+
+
+def get_users_talks(data, wut):
+
+        """
+        :param data: data del file, list with string that represent the users talking
+        :return: lista con string que representan cuando habla cada usuario y los nombres de los usuarios
+        """
+
+        # Split text into single lines #
+        lines = data.split("\n")
+        lista_users = {}
+        for user in wut:
+            count = 0
+            for line in lines:
+                if user in line:
+                    count += 1
+            lista_users[user] = count
+
+        return lista_users
