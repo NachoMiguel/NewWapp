@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'wappApp/bootstrap.min.css' %}" />
+    <title>Holaaaaaaaaaaaaa</title>
+</head>
+<body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{%  static 'wappApp/js/bootstrap.min.js' %}"></script>
+    <p class="lead">Boosttt</p>
+
+    <ul>
+        {% for days in dates %}
+            <li>{{ days }}</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
