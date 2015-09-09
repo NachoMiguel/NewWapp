@@ -17,25 +17,25 @@
         <div class="col-xs-12 col-sm-6 col-md-4">
             <ul class="list-group">
                 {% for days in dates %}
-                    <li class="list-group-item">{{ days }}</li>
+                    <li class="list-group-item list-group-item-success">{{ days }}</li>
                 {% endfor %}
             </ul>
         </div>
-    </div>
-    <div class="row">
+
         <div class="col-xs-12 col-sm-6 col-md-4">
+
             <ul class="list-group">
                 {% for user in users %}
-                    <li class="list-group-item">{{ user }}</li>
+                    <li class="list-group-item list-group-item-success">{{ user }}</li>
                 {% endfor %}
             </ul>
         </div>
-    </div>
-    <div class="row">
+
+
         <div class="col-xs-12 col-sm-6 col-md-4">
             <ul class="list-group">
                 {% for name, count in talks.items %}
-                    <li class="list-group-item">{{ name }} - {{ count }}</li>
+                    <li class="list-group-item list-group-item-success">{{ name }} - {{ count }}</li>
                 {% endfor %}
             </ul>
         </div>

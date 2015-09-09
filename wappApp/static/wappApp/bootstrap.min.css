@@ -5676,7 +5676,7 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
     display: block;
     padding: 10px 15px;
     margin-bottom: -1px;
-    background-color: #fff;
+    background-color: #dff0d8;
     border: 1px solid #ddd
 }
 
