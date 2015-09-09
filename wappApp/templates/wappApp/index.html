@@ -1,5 +1,4 @@
 {% load static %}
-{% load filter_dict %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,24 +12,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{%  static 'wappApp/js/bootstrap.min.js' %}"></script>
-    <p class="lead">Boosttt</p>
 
-    <ul>
-        {% for days in dates %}
-            <li>{{ days }}</li>
-        {% endfor %}
-    </ul>
-
-    <ul>
-        {% for user in users %}
-            <li>{{ user }}</li>
-        {% endfor %}
-    </ul>
-
-    <ul>
-        {% for talk in talks %}
-            <li>{{  talks|get_item:talk.count }}</li>
-        {% endfor %}
-    </ul>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <ul class="list-group">
+                {% for days in dates %}
+                    <li class="list-group-item">{{ days }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <ul class="list-group">
+                {% for user in users %}
+                    <li class="list-group-item">{{ user }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <ul class="list-group">
+                {% for name, count in talks.items %}
+                    <li class="list-group-item">{{ name }} - {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
