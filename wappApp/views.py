@@ -1,7 +1,7 @@
 import re
 import datetime
 import heapq
-
+from collections import Counter
 
 from django.shortcuts import render
 
@@ -11,7 +11,7 @@ def index(request):
     :param data: request
     :return: porcentajes de la conversacion
     """
-    file = open("wappApp/Forever.txt", encoding="UTF-8")
+    file = open("wappApp/Chat de WhatsApp con SK ✌😜✌.txt", encoding="UTF-8")
     data = file.read()
     file.close()
 
@@ -36,7 +36,7 @@ def index(request):
     # number of times each user talks #
     user_talks_count = get_users_count_talks(lines, w_u_t)
 
-    return render(request, 'wappApp/index.html', context={'dates': dates, 'users': users_and_when_users_talk,
+    return render(request, 'wappApp/index.html', context={'dates': dates_people_talk_more, 'users': users_and_when_users_talk,
                                                           'talks': user_talks_count})
 
 
@@ -73,7 +73,7 @@ def get_users_names(lines):
     not_user_names = [' - https:']
 
     # First pattern to look for users when they talk #
-    users_pattern = re.compile(r"\s- [a-zA-Z]+:")
+    users_pattern = re.compile(r"\s- [^:]+:")
 
     # use the pattern to search for each line #
     match_objects_users = [re.search(users_pattern, m) for m in lines]
@@ -82,13 +82,16 @@ def get_users_names(lines):
     string_objects_users = set([w.group() for w in match_objects_users if w is not None and w.group() not in not_user_names])
 
     # new pattern to be more precise with the names #
-    just_user_pattern = re.compile(r"[a-zA-Z]+")
+    just_user_pattern = re.compile(r"([^:]+)")
 
     # use new pattern #
     just_users_match_objects = [re.search(just_user_pattern, m) for m in string_objects_users]
 
     # get the strings out of the matched objects #
     just_users = [w.group() for w in just_users_match_objects]
+
+
+
 
     list_users_and_string_users = [string_objects_users, just_users]
 
@@ -115,14 +118,22 @@ def get_users_count_talks(lines, wut):
 
 
 def dates_with_more_comments(lines, literals):
-    dict_days = {}
-    for day in literals:
-        count = 0
-        for line in lines:
-            if day in line:
-                count += 1
-        dict_days[day] = count
+    dict_days = Counter()
+    r = re.compile(r'\b(\d+/\d+/\d{4})\b')
+    for line in lines:
+        match = r.search(line)
+        if match:
+            dte = match.group()
+            if dte in literals:
+                dict_days[dte] += 1
+    return dict_days.most_common(5)
+    # for day in literals:
+    #     count = 0
+    #     for line in lines:
+    #         if day in line:
+    #             count += 1
+    #     dict_days[day] = count
 
-    newA = heapq.nlargest(5, dict_days, key=dict_days.get)
+    # newA = heapq.nlargest(5, dict_days, key=dict_days.get)
 
-    return newA
+    #return newA
