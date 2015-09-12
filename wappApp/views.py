@@ -11,7 +11,7 @@ def index(request):
     :param data: request
     :return: porcentajes de la conversacion
     """
-    file = open("wappApp/Chat de WhatsApp con SK ✌😜✌.txt", encoding="UTF-8")
+    file = open("wappApp/Chat de WhatsApp con LA RAMA ®.txt", encoding="UTF-8")
     data = file.read()
     file.close()
 
@@ -30,13 +30,16 @@ def index(request):
     # Get the name of the users and the string that represents when a user talks  #
     users_and_when_users_talk = get_users_names(lines)
 
+    # Solo usuarios #
+    solo_users = users_and_when_users_talk[1]
+
     # String that represents when users talks #
     w_u_t = list(users_and_when_users_talk[0])
 
     # number of times each user talks #
     user_talks_count = get_users_count_talks(lines, w_u_t)
 
-    return render(request, 'wappApp/index.html', context={'dates': dates_people_talk_more, 'users': users_and_when_users_talk,
+    return render(request, 'wappApp/index.html', context={'dates': dates_people_talk_more, 'users': solo_users,
                                                           'talks': user_talks_count})
 
 
@@ -106,7 +109,8 @@ def get_users_count_talks(lines, wut):
     """
 
     # Split text into single lines #
-    dict_users = {}
+    dict_users = Counter()
+    largo = len(wut)
     for user in wut:
         count = 0
         for line in lines:
@@ -114,7 +118,7 @@ def get_users_count_talks(lines, wut):
                 count += 1
         dict_users[user] = count
 
-    return dict_users
+    return dict_users.most_common(largo)
 
 
 def dates_with_more_comments(lines, literals):
@@ -137,3 +141,19 @@ def dates_with_more_comments(lines, literals):
     # newA = heapq.nlargest(5, dict_days, key=dict_days.get)
 
     #return newA
+
+
+def strip_numbers(wut):
+    good_user = []
+    for u in wut:
+        if '\u202a' in u:
+            u.replace('\u202a', "")
+            if '\u202c' in u:
+                u.replace('\u202c', "")
+                good_user.append(u)
+            else:
+                good_user.append(u)
+        else:
+            good_user.append(u)
+
+    return good_user
