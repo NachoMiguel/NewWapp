@@ -3,7 +3,7 @@ import datetime
 import heapq
 from collections import Counter
 
-from django.shortcuts import render
+from django.shortcuts import render, Http404
 
 
 def index(request):
@@ -11,37 +11,41 @@ def index(request):
     :param data: request
     :return: porcentajes de la conversacion
     """
-    file = open("wappApp/Chat de WhatsApp con LA RAMA ®.txt", encoding="UTF-8")
-    data = file.read()
-    file.close()
+    return render(request, 'wappApp/index.html')
 
-    lines = data.split("\n")
 
-    # Search for all the days in the conversation #
-    dates_str_and_literal = search_date(lines)
+def do_some_work(request):
+    if request.method == "POST":
+        data = request.FILES['some_file']
 
-    # 02/jan/2015
-    dates = dates_str_and_literal[0]
-    # 02/01/2015
-    literal = dates_str_and_literal[1]
+        lines = data.split("\n")
 
-    dates_people_talk_more = dates_with_more_comments(lines, literal)
+        # Search for all the days in the conversation #
+        dates_str_and_literal = search_date(lines)
 
-    # Get the name of the users and the string that represents when a user talks  #
-    users_and_when_users_talk = get_users_names(lines)
+        # 02/jan/2015
+        dates = dates_str_and_literal[0]
+        # 02/01/2015
+        literal = dates_str_and_literal[1]
 
-    # Solo usuarios #
-    solo_users = users_and_when_users_talk[1]
+        dates_people_talk_more = dates_with_more_comments(lines, literal)
 
-    # String that represents when users talks #
-    w_u_t = list(users_and_when_users_talk[0])
+        # Get the name of the users and the string that represents when a user talks  #
+        users_and_when_users_talk = get_users_names(lines)
 
-    # number of times each user talks #
-    user_talks_count = get_users_count_talks(lines, w_u_t)
+        # Solo usuarios #
+        solo_users = users_and_when_users_talk[1]
 
-    return render(request, 'wappApp/index.html', context={'dates': dates_people_talk_more, 'users': solo_users,
-                                                          'talks': user_talks_count})
+        # String that represents when users talks #
+        w_u_t = list(users_and_when_users_talk[0])
 
+        # number of times each user talks #
+        user_talks_count = get_users_count_talks(lines, w_u_t)
+
+        return render(request, 'wappApp/work.html',  context={'dates': dates_people_talk_more, 'users': solo_users,
+                                        'talks': user_talks_count})
+    else:
+        raise Http404("No POST data was given.")
 
 def search_date(lines):
     """

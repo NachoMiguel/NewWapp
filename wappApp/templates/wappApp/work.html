@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'wappApp/bootstrap.min.css' %}" />
+    <title>Holaaaaaaaaaaaaa</title>
+</head>
+<body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{%  static 'wappApp/js/bootstrap.min.js' %}"></script>
+    <div class="jumbotron">
+        <h1>Hello, grupo!</h1>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    </div>
+    <div class="row-prueba custom-padding">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <h2 class="h2">Días con más mensajes</h2>
+            <ul class="list-group">
+                {% for days in dates %}
+                    <li class="list-group-item list-group-item-success">{{ days }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <h2 class="h2">¿Quien está en el grupo?!</h2>
+            <ul class="list-group">
+                {% for user in users %}
+                    <li class="list-group-item list-group-item-success">{{ user }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <h2 class="h2">¿Quien habla más?!</h2>
+            <ul class="list-group">
+                {% for name in talks %}
+                    <li class="list-group-item list-group-item-success">{{ name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
