@@ -18,7 +18,7 @@ def do_some_work(request):
     if request.method == "POST":
         data = request.FILES['some_file']
 
-        lines = data.split("\n")
+        lines = data.readlines()
 
         # Search for all the days in the conversation #
         dates_str_and_literal = search_date(lines)
@@ -43,9 +43,10 @@ def do_some_work(request):
         user_talks_count = get_users_count_talks(lines, w_u_t)
 
         return render(request, 'wappApp/work.html',  context={'dates': dates_people_talk_more, 'users': solo_users,
-                                        'talks': user_talks_count})
+                                                              'talks': user_talks_count})
     else:
         raise Http404("No POST data was given.")
+
 
 def search_date(lines):
     """

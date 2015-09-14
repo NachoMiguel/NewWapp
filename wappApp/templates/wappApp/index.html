@@ -18,6 +18,7 @@
     </div>
     <div class="row-prueba custom-padding">
         <form  action="{% url "do_some_work" %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="exampleInputFile">File input</label>
                 <input type="file" id="exampleInputFile" name="some_file">
