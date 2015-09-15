@@ -1,22 +1,11 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'wappApp/bootstrap.min.css' %}" />
-    <title>Holaaaaaaaaaaaaa</title>
-</head>
-<body>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{%  static 'wappApp/js/bootstrap.min.js' %}"></script>
-    <div class="jumbotron">
-        <h1>Hello, grupo!</h1>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-    </div>
-    <div class="row-prueba custom-padding">
+{% block title %}GroupApp Index{% endblock %}
+
+
+{% block content %}
+<div class="row-prueba custom-padding">
         <form  action="{% url "do_some_work" %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -25,6 +14,5 @@
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
-    </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,21 +1,16 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'wappApp/bootstrap.min.css' %}" />
-    <title>Holaaaaaaaaaaaaa</title>
-</head>
-<body>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{%  static 'wappApp/js/bootstrap.min.js' %}"></script>
+{% block title %}GroupApp Data del Grupo{% endblock %}
+
+{% block Header %}
     <div class="jumbotron">
         <h1>Hello, grupo!</h1>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        <p><a class="btn btn-primary btn-lg" href={% url 'wappApp.views.index'%} role="button">Volver</a></p>
     </div>
+{% endblock %}
+
+{% block content %}
     <div class="row-prueba custom-padding">
         <div class="col-xs-12 col-sm-6 col-md-4">
             <h2 class="h2">Días con más mensajes</h2>
@@ -45,5 +40,4 @@
             </ul>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

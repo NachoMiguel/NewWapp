@@ -1,6 +1,5 @@
 import re
 import datetime
-import heapq
 from collections import Counter
 
 from django.shortcuts import render, Http404
@@ -18,7 +17,9 @@ def do_some_work(request):
     if request.method == "POST":
         data = request.FILES['some_file']
 
-        lines = data.readlines()
+        lineas = data.readlines()
+
+        lines = [linea.decode('utf-8')for linea in lineas]
 
         # Search for all the days in the conversation #
         dates_str_and_literal = search_date(lines)
