@@ -4,11 +4,52 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  *//*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
-    font-family: sans-serif;
+    font-family: 'Roboto',sans-serif;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%
 }
 
+#header {
+    background-color: #009688;
+    background-attachment: scroll,	fixed;
+    background-position: top left,	top left;
+    background-repeat: repeat,	no-repeat;
+    background-size: auto,	auto 100%;
+    color: rgba(255, 255, 255, 0.5);
+    height: 20%;
+    left: 0;
+    padding: 8em 4em 0 0;
+    position: fixed;
+    text-align: right;
+    top: 0;
+    width: 35%;
+}
+
+.we{
+    background-color: rgba(0, 150, 136, 0.01);
+    height: 80%;
+    left: 0;
+    padding: 0;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    width: 35%;
+}
+
+.custom-body{
+    width: 980px;
+    margin: 0 auto;
+}
+.myclass {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:0em;
+    height:0em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px  #ccc;
+}
 .custom-padding {
     padding-left: 2em;
     padding-right: 2em;
@@ -16,6 +57,8 @@ html {
 
 body {
     margin: 0;
+    padding: 0;
+    direction: ltr;
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
@@ -1356,11 +1399,10 @@ html {
 }
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Roboto',sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
-    background-color: #009688
 }
 
 button, input, select, textarea {
@@ -5358,11 +5400,13 @@ a.badge:focus, a.badge:hover {
 
 .jumbotron .h1, .jumbotron h1 {
     padding-left: 0.6em;
-    color: inherit
+    color: inherit;
+    margin: 0 auto;
+    padding-top: 13px;
+    width: 980px;
 }
 
 .jumbotron p {
-    margin-bottom: 15px;
     font-size: 21px;
     font-weight: 200;
     padding-left: 2.1em;
@@ -5383,7 +5427,6 @@ a.badge:focus, a.badge:hover {
 @media screen and (min-width: 768px) {
     .jumbotron {
         padding-top: 48px;
-        padding-bottom: 48px
     }
 
     .container .jumbotron, .container-fluid .jumbotron {
