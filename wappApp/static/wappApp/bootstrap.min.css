@@ -4152,7 +4152,7 @@ tbody.collapse.in {
     position: relative;
     z-index: 2;
     float: left;
-    width: 100%;
+    width: 25em;
     margin-bottom: 0
 }
 
@@ -4199,9 +4199,8 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 }
 
 .input-group-addon, .input-group-btn {
-    width: 1%;
+    width: 0%;
     white-space: nowrap;
-    vertical-align: middle
 }
 
 .input-group-addon {
@@ -4257,7 +4256,7 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 }
 
 .input-group-btn > .btn {
-    position: relative
+    position: fixed
 }
 
 .input-group-btn > .btn + .btn {
