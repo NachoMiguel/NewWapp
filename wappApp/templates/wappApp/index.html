@@ -73,8 +73,8 @@
             <li data-target="#page-slider" data-slide-to="5"></li>
         </ol>
 
-        <a class="welcome-page-left hidden-xs" href="#page-slider" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
-        <a class="welcome-page-right hidden-xs" href="#page-slider" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+        <a class="welcome-page-left hidden-xs hidden" href="#page-slider" data-slide="prev" id="left"><i class="fa fa-chevron-left"></i></a>
+        <a class="welcome-page-right hidden-xs hidden" href="#page-slider" data-slide="next" id="right"><i class="fa fa-chevron-right"></i></a>
 
         <div class="carousel-inner">
 
@@ -428,5 +428,15 @@
     $('#some_file_input').inputFileText( { text: 'Uploaded' } );
 });
 </script>
+<script>
+    $(document).ready(function(){
+        $(".custom-form-thing").submit(function() {
+            if($('#some_file_input').val()){
+            $('a.hidden').removeClass('hidden');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

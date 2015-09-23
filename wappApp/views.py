@@ -46,8 +46,8 @@ def do_some_work(request):
             # number of times each user talks #
             user_talks_count = get_users_count_talks(lines, w_u_t)
 
-            return render(request, 'wappApp/work.html',  context={'dates': dates_people_talk_more, 'users': solo_users,
-                                                                  'talks': user_talks_count})
+            return render(request,  context={'dates': dates_people_talk_more, 'users': solo_users,
+                                             'talks': user_talks_count})
     else:
         raise Http404("No POST data was given.")
 

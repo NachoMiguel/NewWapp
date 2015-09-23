@@ -2654,7 +2654,7 @@ input[type=radio], input[type=checkbox] {
 
 input[type=file] {
     color: transparent;
-    display: block
+    display: inline-table;
 }
 
 input[type=range] {
