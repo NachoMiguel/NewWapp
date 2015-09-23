@@ -106,9 +106,13 @@
                         </div>
                     </div>
                 </div>
+                <footer id="footer" class="text-center">
+                    Powered by NachoMiguel
+                </footer>
             </div><!--/#home-page-->
 
             <div id="about-page" class="item">
+                <div>
                 <div class="container">
 
                     <div class="vertical-middle">
@@ -121,20 +125,32 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h3>Our Company</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                        <h2 class="h2">Días con más mensajes</h2>
+                                            <ul class="list-group">
+                                                {% for days in dates %}
+                                                    <li class="list-group-item list-group-item-success">{{ days }}</li>
+                                                {% endfor %}
+                                            </ul>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h3>Our Mission</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                        <h2 class="h2">¿Quien está en el grupo?!</h2>
+                                            <ul class="list-group">
+                                                {% for user in users %}
+                                                    <li class="list-group-item list-group-item-success">{{ user }}</li>
+                                                {% endfor %}
+                                            </ul>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h3>Our Vision</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                        <h2 class="h2">¿Quien habla más?!</h2>
+                                            <ul class="list-group">
+                                                {% for name in talks %}
+                                                    <li class="list-group-item list-group-item-success">{{ name }}</li>
+                                                {% endfor %}
+                                            </ul>
                                     </div>
                                 </div>
                             </div>
@@ -142,10 +158,12 @@
                         </div>
                     </div>
 
-                </div>              
+                </div>
+                </div>
             </div><!--/#about-page-->
 
             <div id="service-page" class="item">
+                <div>
                 <div class="container">
 
                     <div class="vertical-middle">
@@ -189,10 +207,12 @@
                         </div>
                     </div>
 
-                </div>                
+                </div>
+                </div>
             </div><!--/#service-page-->
 
             <div id="portfolio-page" class="item">
+                <div>
                 <div class="container">
 
                     <div class="vertical-middle">
@@ -252,10 +272,12 @@
                         </div>
                     </div>
 
-                </div>                
+                </div>
+                </div>
             </div><!--/#portfolio-page-->
 
             <div id="blog-page" class="item">
+                <div>
                 <div class="container">
 
                     <div class="vertical-middle">
@@ -312,10 +334,12 @@
                         </div>
                     </div>
 
-                </div>                
+                </div>
+                </div>
             </div><!--/#blog-page-->
 
             <div id="contact-page" class="item">
+                <div>
                 <div class="container">
 
                     <div class="vertical-middle">
@@ -362,15 +386,14 @@
                         </div>
                     </div>
 
-                </div>                
+                </div>
+                </div>
             </div><!--/#contact-page-->
         </div><!--/.carousel-inner-->
     </div>
 </section>
 
-<footer id="footer" class="text-center">
-    Powered by NachoMiguel
-</footer>
+
 
 <script type="text/javascript" src="{% static 'wappApp/js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'wappApp/js/bootstrap.min.js' %}"></script>
