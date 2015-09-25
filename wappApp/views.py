@@ -1,7 +1,8 @@
 import re
 import datetime
+import json
 from collections import Counter
-
+from django.http import HttpResponse
 from django.shortcuts import render, Http404
 
 
@@ -14,8 +15,8 @@ def index(request):
 
 
 def do_some_work(request):
-    if request.method == "POST":
 
+    if request.is_ajax() and request.method == "POST":
         if len(request.FILES) != 0:
 
             data = request.FILES['some_file']
@@ -46,8 +47,14 @@ def do_some_work(request):
             # number of times each user talks #
             user_talks_count = get_users_count_talks(lines, w_u_t)
 
-            return render(request,  context={'dates': dates_people_talk_more, 'users': solo_users,
-                                             'talks': user_talks_count})
+            context = {'dates': dates_people_talk_more, 'users': solo_users,
+                                             'talks': user_talks_count}
+
+            data = json.dumps(context)
+
+            return HttpResponse(data, content_type="application/json")
+        else:
+            raise Http404("No File uploaded")
     else:
         raise Http404("No POST data was given.")
 

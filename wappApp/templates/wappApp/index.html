@@ -86,12 +86,12 @@
                                 <div class="col-sm-6 col-md-push-6">
                                     <div class="embed-responsive embed-responsive-16by9">
                                             <div class="custom-right-thing">
-                                                <form  action="{% url "do_some_work" %}" method="POST" enctype="multipart/form-data" class="custom-form-thing">
+                                                <form  id="formi"  method="POST" enctype="multipart/form-data" class="custom-form-thing">
                                                     {% csrf_token %}
                                                     <div class="inputWrapper">
                                                         <input id="some_file_input" type="file"  name="some_file" class="custom-input-thing" data-buttonName="btn-primary" data-icon="true">
                                                     </div>
-                                                    <button type="submit" class="btn btn-default">Submit</button>
+                                                    <button type="submit" class="btn btn-default" id="upload-file-btn">Submit</button>
                                                 </form>
                                             </div>
 
@@ -126,9 +126,9 @@
                                 <div class="col-sm-4">
                                     <div class="box">
                                         <h2 class="h2">Días con más mensajes</h2>
-                                            <ul class="list-group">
+                                            <ul class="list-group"  id="dates">
                                                 {% for days in dates %}
-                                                    <li class="list-group-item list-group-item-success">{{ days }}</li>
+
                                                 {% endfor %}
                                             </ul>
                                     </div>
@@ -136,7 +136,7 @@
                                 <div class="col-sm-4">
                                     <div class="box">
                                         <h2 class="h2">¿Quien está en el grupo?!</h2>
-                                            <ul class="list-group">
+                                            <ul class="list-group" id="users">
                                                 {% for user in users %}
                                                     <li class="list-group-item list-group-item-success">{{ user }}</li>
                                                 {% endfor %}
@@ -146,7 +146,7 @@
                                 <div class="col-sm-4">
                                     <div class="box">
                                         <h2 class="h2">¿Quien habla más?!</h2>
-                                            <ul class="list-group">
+                                            <ul class="list-group" id="more_talks">
                                                 {% for name in talks %}
                                                     <li class="list-group-item list-group-item-success">{{ name }}</li>
                                                 {% endfor %}
@@ -226,7 +226,7 @@
 
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/portfolio/1.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -240,7 +240,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/portfolio/2.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -254,7 +254,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/portfolio/3.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -291,7 +291,7 @@
 
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/blog/1.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -304,7 +304,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/blog/2.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -317,7 +317,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="overlay-container">
-                                        <img class="img-responsive" src="images/blog/3.jpg" alt="">
+                                        <img class="img-responsive" src="" alt="">
                                         <div class="overlay">
                                             <div class="vertical-middle">
                                                 <div class="vertical-middle-inner">
@@ -399,6 +399,7 @@
 <script type="text/javascript" src="{% static 'wappApp/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'wappApp/js/main.js' %}"></script>
 <script type="text/javascript" src="{% static 'wappApp/js/jquery-input-file-text.js' %}"></script>
+<script type="text/javascript" src="{% static 'wappApp/js/custom-js.js' %}"></script>
 <script>
 
     $('form').submit(function(event){
@@ -424,19 +425,48 @@
 });
 </script>
 <script>
-    $("input[type=file]").on("change", function() {
-    $('#some_file_input').inputFileText( { text: 'Uploaded' } );
-});
-</script>
-<script>
-    $(document).ready(function(){
-        $(".custom-form-thing").submit(function() {
-            if($('#some_file_input').val()){
-            $('a.hidden').removeClass('hidden');
-            }
-        });
-    });
-</script>
+    $("#formi").submit(function(event){
+       event.preventDefault();
+        var data = new FormData($('form').get(0));
 
+            $.ajax({
+                 type:"POST",
+                 url:"{% url 'do_some_work' %}",
+                 data: data,
+                 processData: false,
+                 contentType: false,
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+
+                 success: function(data){
+                     console.log("YEEEEEEEEEEEEEEEEAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH")
+                     $("#dates").html(data.dates);
+                         var dates = "";
+                        $(data.dates).each(function(i, days){
+                            dates += "<li class='list-group-item list-group-item-success'>"+days+"</li>"
+                        });
+                        $("#dates").html(dates);
+
+                     $("#users").html(data.users);
+                         var users = "";
+                        $(data.users).each(function(i, u){
+                            users += "<li class='list-group-item list-group-item-success'>"+u+"</li>"
+                        });
+                        $("#users").html(users);
+
+                     $("#more_talks").html(data.talks);
+                         var more_talks = "";
+                        $(data.talks).each(function(i, t){
+                            more_talks += "<li class='list-group-item list-group-item-success'>"+t+"</li>"
+                        });
+                        $("#more_talks").html(more_talks);
+                    },
+
+
+                 error : function(xhr) {
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    }
+            });
+       });
+</script>
 </body>
 </html>
