@@ -1,6 +1,7 @@
 import re
 import datetime
 import json
+import operator
 from collections import Counter
 from django.http import HttpResponse
 from django.shortcuts import render, Http404
@@ -148,17 +149,26 @@ def dates_with_more_comments(lines, literals):
             dte = match.group()
             if dte in literals:
                 dict_days[dte] += 1
-    return dict_days.most_common(5)
-    # for day in literals:
-    #     count = 0
-    #     for line in lines:
-    #         if day in line:
-    #             count += 1
-    #     dict_days[day] = count
+    dias = dict_days.most_common(5)
+    fechas_con_mes = numero_a_mes(dias)
+    return dias
 
-    # newA = heapq.nlargest(5, dict_days, key=dict_days.get)
 
-    #return newA
+def numero_a_mes(dias):
+    dict_meses = {1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio', 7: 'Julio', 8: 'Agosto',
+                  9: 'Setiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'}
+    dias_lista = {}
+    for i in dias:
+        lista = list(i)
+        numero = lista[1]
+        fecha_entera = lista[0]
+        dia = fecha_entera.split('/')[1]
+        h = dict_meses[int(dia)]
+        fecha_entera = fecha_entera.replace("/" + dia + "/" " de " + h + " del ")
+        dias_lista[fecha_entera] = numero
+        sorted_dias = sorted(dias_lista.items(), key=operator.itemgetter(1), reverse=True)
+
+    return sorted_dias
 
 
 def strip_numbers(wut):
