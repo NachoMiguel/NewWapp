@@ -37,6 +37,8 @@ def do_some_work(request):
             # Saca los dias con mas comentarios #
             dates_people_talk_more = dates_with_more_comments(lines, literal)
 
+            dates_comments = cambio_string_numeros(dates_people_talk_more)
+
             # Obtiene el nombre de los usuarios y el string que representa cuando los usuarios hablan  #
             users_and_when_users_talk = get_users_names(lines)
 
@@ -49,8 +51,10 @@ def do_some_work(request):
             # Numero de veces cuando un usuario habla #
             user_talks_count = get_users_count_talks(lines, w_u_t)
 
-            context = {'dates': dates_people_talk_more, 'users': solo_users,
-                                             'talks': user_talks_count}
+            talks = cambio_string_numeros_users(user_talks_count)
+
+            context = {'dates': dates_comments, 'users': solo_users,
+                                             'talks': talks}
 
             # Paso el diccionario a formato Json #
             data = json.dumps(context)
@@ -151,7 +155,7 @@ def dates_with_more_comments(lines, literals):
                 dict_days[dte] += 1
     dias = dict_days.most_common(5)
     fechas_con_mes = numero_a_mes(dias)
-    return dias
+    return fechas_con_mes
 
 
 def numero_a_mes(dias):
@@ -164,7 +168,7 @@ def numero_a_mes(dias):
         fecha_entera = lista[0]
         dia = fecha_entera.split('/')[1]
         h = dict_meses[int(dia)]
-        fecha_entera = fecha_entera.replace("/" + dia + "/" " de " + h + " del ")
+        fecha_entera = fecha_entera.replace("/" + dia + "/", " de " + h + " del ")
         dias_lista[fecha_entera] = numero
         sorted_dias = sorted(dias_lista.items(), key=operator.itemgetter(1), reverse=True)
 
@@ -185,3 +189,27 @@ def strip_numbers(wut):
             good_user.append(u)
 
     return good_user
+
+
+def cambio_string_numeros(dates_people_talk_more):
+    lista = []
+    for i in dates_people_talk_more:
+        l = list(i)
+        fecha_entera = l[0]
+        numero = str(l[1])
+        arreglo = fecha_entera + ' - ' + numero + ' mensajes'
+        lista.append(arreglo)
+
+    return lista
+
+
+def cambio_string_numeros_users(dates_people_talk_more):
+    lista = []
+    for i in dates_people_talk_more:
+        l = list(i)
+        fecha_entera = l[0]
+        numero = str(l[1])
+        arreglo = fecha_entera + ' ' + numero + ' mensajes'
+        lista.append(arreglo)
+
+    return lista

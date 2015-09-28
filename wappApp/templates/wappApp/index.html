@@ -125,7 +125,7 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h2 class="h2">Días con más mensajes</h2>
+                                        <h3 class="h3">Días con más mensajes</h3>
                                             <ul class="list-group"  id="dates">
                                                 {% for days in dates %}
                                                     <li class="list-group-item list-group-item-success">{{ days }}</li>
@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h2 class="h2">¿Quien está en el grupo?!</h2>
+                                        <h3 class="h3">¿Quien está en el grupo?!</h3>
                                             <ul class="list-group" id="users">
                                                 {% for user in users %}
                                                     <li class="list-group-item list-group-item-success">{{ user }}</li>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="box">
-                                        <h2 class="h2">¿Quien habla más?!</h2>
+                                        <h3 class="h3">¿Quien habla más?!</h3>
                                             <ul class="list-group" id="more_talks">
                                                 {% for name in talks %}
                                                     <li class="list-group-item list-group-item-success">{{ name }}</li>
@@ -442,21 +442,21 @@
                      $("#dates").html(data.dates);
                          var dates = "";
                         $(data.dates).each(function(i, days){
-                            dates += "<li class='list-group-item list-group-item-success'>"+days+"</li>"
+                            dates += "<li class='list-group-item list-group-item-success'>"+ days +"</li>"
                         });
                         $("#dates").html(dates);
 
                      $("#users").html(data.users);
                          var users = "";
                         $(data.users).each(function(i, u){
-                            users += "<li class='list-group-item list-group-item-success'>"+u+"</li>"
+                            users += "<li class='list-group-item list-group-item-success'>"+ u +"</li>"
                         });
                         $("#users").html(users);
 
                      $("#more_talks").html(data.talks);
                          var more_talks = "";
                         $(data.talks).each(function(i, t){
-                            more_talks += "<li class='list-group-item list-group-item-success'>"+t+"</li>"
+                            more_talks += "<li class='list-group-item list-group-item-success'>"+ t +"</li>"
                         });
                         $("#more_talks").html(more_talks);
                     },
