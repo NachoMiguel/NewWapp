@@ -25,7 +25,7 @@ def do_some_work(request):
 
             lines = [linea.decode('utf-8')for linea in lineas]
 
-            # Search for all the days in the conversation #
+            # Busca todos los dias en la conversacion #
             dates_str_and_literal = search_date(lines)
 
             # 02/jan/2015
@@ -33,23 +33,25 @@ def do_some_work(request):
             # 02/01/2015
             literal = dates_str_and_literal[1]
 
+            # Saca los dias con mas comentarios #
             dates_people_talk_more = dates_with_more_comments(lines, literal)
 
-            # Get the name of the users and the string that represents when a user talks  #
+            # Obtiene el nombre de los usuarios y el string que representa cuando los usuarios hablan  #
             users_and_when_users_talk = get_users_names(lines)
 
             # Solo usuarios #
             solo_users = users_and_when_users_talk[1]
 
-            # String that represents when users talks #
+            # String que representa cuando los usuarios hablan #
             w_u_t = list(users_and_when_users_talk[0])
 
-            # number of times each user talks #
+            # Numero de veces cuando un usuario habla #
             user_talks_count = get_users_count_talks(lines, w_u_t)
 
             context = {'dates': dates_people_talk_more, 'users': solo_users,
                                              'talks': user_talks_count}
 
+            # Paso el diccionario a formato Json #
             data = json.dumps(context)
 
             return HttpResponse(data, content_type="application/json")
@@ -65,10 +67,10 @@ def search_date(lines):
     :return: los dias en que produjeron las conversaciones, dia por dia
     """
 
-    # Create empty list, split each line with "," and save the first part into the list #
+    # Crea una lista vacia, separa cada linea con "," graba la primera parte en la lista #
     lista = [line.split(",", 1)[0] for line in lines]
 
-    # Create regex pattern and compile it #
+    # Crea un regex pattern y lo compila #
     date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
 
     # match the pattern in the list objects and make sure there are no repetitions with set()#
