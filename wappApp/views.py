@@ -5,6 +5,7 @@ import operator
 from collections import Counter
 from django.http import HttpResponse
 from django.shortcuts import render, Http404
+from pattern.text.en import tag
 
 
 def index(request):
@@ -25,6 +26,8 @@ def do_some_work(request):
             lineas = data.readlines()
 
             lines = [linea.decode('utf-8')for linea in lineas]
+
+            caca = prueba_tag(lines)
 
             # Busca todos los dias en la conversacion #
             dates_str_and_literal = search_date(lines)
@@ -213,3 +216,8 @@ def cambio_string_numeros_users(dates_people_talk_more):
         lista.append(arreglo)
 
     return lista
+
+
+def prueba_tag(lines):
+    lp = tag("That is  a very ugly car")
+    return lp
