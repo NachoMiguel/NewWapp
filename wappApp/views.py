@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import re
 import datetime
 import json
 import operator
+from string import ascii_letters
 from collections import Counter
 from django.http import HttpResponse
 from django.shortcuts import render, Http404
@@ -26,6 +28,7 @@ def do_some_work(request):
             lineas = data.readlines()
 
             lines = [linea.decode('utf-8')for linea in lineas]
+
 
             caca = prueba_tag(lines)
 
@@ -219,5 +222,9 @@ def cambio_string_numeros_users(dates_people_talk_more):
 
 
 def prueba_tag(lines):
-    lp = tag("That is  a very ugly car")
-    return lp
+    li = []
+
+    for i in lines:
+        w = re.findall('[a-zA-ZÑñ]+', i, re.UNICODE)
+        li.append(w)
+    return li
