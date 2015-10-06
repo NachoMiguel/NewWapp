@@ -3,12 +3,15 @@ import re
 import datetime
 import json
 import operator
-from string import ascii_letters
 from collections import Counter
 from django.http import HttpResponse
 from django.shortcuts import render, Http404
-from pattern.text.en import tag
+# from pattern.text.en import tag
 
+
+users_pattern = re.compile(r"\s- [^:]+:")
+date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
+just_user_pattern = re.compile(r"([^:]+)")
 
 def index(request):
     """
@@ -29,8 +32,7 @@ def do_some_work(request):
 
             lines = [linea.decode('utf-8')for linea in lineas]
 
-
-            caca = prueba_tag(lines)
+            caca = saca_numeros(lines)
 
             # Busca todos los dias en la conversacion #
             dates_str_and_literal = search_date(lines)
@@ -82,7 +84,7 @@ def search_date(lines):
     lista = [line.split(",", 1)[0] for line in lines]
 
     # Crea un regex pattern y lo compila #
-    date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
+
 
     # match the pattern in the list objects and make sure there are no repetitions with set()#
     dates = set(list(filter(date_pattern.match, lista)))
@@ -105,7 +107,7 @@ def get_users_names(lines):
     not_user_names = [' - https:']
 
     # First pattern to look for users when they talk #
-    users_pattern = re.compile(r"\s- [^:]+:")
+
 
     # use the pattern to search for each line #
     match_objects_users = [re.search(users_pattern, m) for m in lines]
@@ -114,7 +116,7 @@ def get_users_names(lines):
     string_objects_users = set([w.group() for w in match_objects_users if w is not None and w.group() not in not_user_names])
 
     # new pattern to be more precise with the names #
-    just_user_pattern = re.compile(r"([^:]+)")
+
 
     # use new pattern #
     just_users_match_objects = [re.search(just_user_pattern, m) for m in string_objects_users]
@@ -221,10 +223,40 @@ def cambio_string_numeros_users(dates_people_talk_more):
     return lista
 
 
-def prueba_tag(lines):
-    li = []
+def saca_numeros(lines):
+    lineas = []
+    for line in lines:
+        s = re.sub(r"[\d/():,+-<>?¿¡!]", "", line)
+        lineas.append(s)
+    palabras = []
+    for i in lineas:
+        matches = re.findall(ur'\b\w+\b', i, re.UNICODE)
+        coincidensia = [word for word in matches if word not in set(("a", "un", "el", "me", "Archivo", "omitido", "En",
+                                                                     "en", "y", "p", "un","se", "Se", "Uh", "los", "Los"
+                                                                     , "las", "Las", "O", "o", "pero", "Pero", "mas",
+                                                                     "Mas", "m", "Y", "q", "Q", "P", "uh", "que", "Me",
+                                                                     "ir", "fui", "que", "la", "vos", "de", "De", "El",
+                                                                     "No", "no", "esta", "para", "Te", "te", "Yo", "yo",
+                                                                     "Esa", "esa", "estoy", "Estoy", "voy", "ve", "con",
+                                                                     "Con", "Que", "quien", "este", "ser", "estas",
+                                                                     "estás", "Para", "Hay", "hay", "dale", "Dale", "lo"
+                                                                     , "Lo", "es", "Es", "al", "ese", "Ese", "estar",
+                                                                     "Estar", "hs", "Hs", "por", "Por", "Acá", "acá",
+                                                                     "Hoy", "hoy", "Tu", "tu", "Tus", "tus", "todo",
+                                                                     "Todo", "va", "Va", "Más", "más", "del"))]
+        utf8_matches = [match.encode('utf-8') for match in coincidensia]
+        for utf8_word in utf8_matches:
+            palabras.append(utf8_word)
+    return palabras
 
-    for i in lines:
-        w = re.findall('[a-zA-ZÑñ]+', i, re.UNICODE)
-        li.append(w)
-    return li
+
+def prueba_tag(lines):
+    l = []
+    #lineas = [line.split(":", 2)[1] for line in lines]
+    for line in lines:
+        #unicode_text_one = q.decode('utf-8')
+        matches = re.findall(ur'\b\w+\b', line, re.UNICODE)
+        utf8_matches = [match.encode('utf-8') for match in matches]
+        for utf8_word in utf8_matches:
+            l.append(utf8_word)
+    return l
