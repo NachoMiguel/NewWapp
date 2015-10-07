@@ -13,11 +13,13 @@ users_pattern = re.compile(r"\s- [^:]+:")
 date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
 just_user_pattern = re.compile(r"([^:]+)")
 
+
 def index(request):
     """
     :param data: request
     :return: porcentajes de la conversacion
     """
+    global file
     return render(request, 'wappApp/index.html')
 
 
@@ -31,8 +33,6 @@ def do_some_work(request):
             lineas = data.readlines()
 
             lines = [linea.decode('utf-8')for linea in lineas]
-
-            caca = saca_numeros(lines)
 
             # Busca todos los dias en la conversacion #
             dates_str_and_literal = search_date(lines)
@@ -142,6 +142,7 @@ def get_users_count_talks(lines, wut):
     # Split text into single lines #
     dict_users = Counter()
     largo = len(wut)
+    # dict_users = {user: sum(user in line for line in lines) for user in wut }
     for user in wut:
         count = 0
         for line in lines:
@@ -223,7 +224,7 @@ def cambio_string_numeros_users(dates_people_talk_more):
     return lista
 
 
-def saca_numeros(lines):
+def saca_numeros_sacar_palabras(lines):
     lineas = []
     for line in lines:
         s = re.sub(r"[\d/():,+-<>?¿¡!]", "", line)

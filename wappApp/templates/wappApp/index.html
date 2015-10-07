@@ -410,7 +410,7 @@
             console.log("No files selected.");
             // Or some div with image showing
             var div = document.createElement('div');
-            div.innerHTML = "<img src='{% static "wappApp/images/Icono_de_Alto.png"%}' classs= 'imgclass'>";
+            div.innerHTML = "<img src='{% static "wappApp/images/Icono_de_Alto.png"%}' class= 'imgclass'>";
 
             // better to use CSS though - just set class
             div.setAttribute('class', 'myclass'); // and make sure myclass has some styles in css
@@ -438,7 +438,49 @@
                  csrfmiddlewaretoken: '{{ csrf_token }}',
 
                  success: function(data){
-                     console.log("YEEEEEEEEEEEEEEEEAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH")
+                     $("#dates").html(data.dates);
+                         var dates = "";
+                        $(data.dates).each(function(i, days){
+                            dates += "<li class='list-group-item list-group-item-success'>"+ days +"</li>"
+                        });
+                        $("#dates").html(dates);
+
+                     $("#users").html(data.users);
+                         var users = "";
+                        $(data.users).each(function(i, u){
+                            users += "<li class='list-group-item list-group-item-success'>"+ u +"</li>"
+                        });
+                        $("#users").html(users);
+
+                     $("#more_talks").html(data.talks);
+                         var more_talks = "";
+                        $(data.talks).each(function(i, t){
+                            more_talks += "<li class='list-group-item list-group-item-success'>"+ t +"</li>"
+                        });
+                        $("#more_talks").html(more_talks);
+                    },
+
+
+                 error : function(xhr) {
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    }
+            });
+       });
+</script>
+<script>
+    $("#right").onclick(function(event){
+       event.preventDefault();
+        var data = new FormData($('form').get(0));
+
+            $.ajax({
+                 type:"POST",
+                 url:"{% url 'do_some_work' %}",
+                 data: data,
+                 processData: false,
+                 contentType: false,
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+
+                 success: function(data){
                      $("#dates").html(data.dates);
                          var dates = "";
                         $(data.dates).each(function(i, days){
