@@ -3,15 +3,11 @@ import re
 import datetime
 import json
 import operator
+import memcache
 from collections import Counter
 from django.http import HttpResponse
 from django.shortcuts import render, Http404
-# from pattern.text.en import tag
-
-
-users_pattern = re.compile(r"\s- [^:]+:")
-date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
-just_user_pattern = re.compile(r"([^:]+)")
+from pattern.text.en import tag
 
 
 def index(request):
@@ -19,7 +15,6 @@ def index(request):
     :param data: request
     :return: porcentajes de la conversacion
     """
-    global file
     return render(request, 'wappApp/index.html')
 
 
@@ -30,44 +25,42 @@ def do_some_work(request):
 
             data = request.FILES['some_file']
 
-            lineas = data.readlines()
+            if '.txt' in data.name:
 
-            lines = [linea.decode('utf-8')for linea in lineas]
+                lineas_feas = data.readlines()
 
-            # Busca todos los dias en la conversacion #
-            dates_str_and_literal = search_date(lines)
+                lineas = [linea.decode('utf-8')for linea in lineas_feas]
 
-            # 02/jan/2015
-            dates = dates_str_and_literal[0]
-            # 02/01/2015
-            literal = dates_str_and_literal[1]
+                # Busca todos los dias en la conversacion, devuelve en este formato: 01/02/2015 #
+                dias_numeros = search_date(lineas)
 
-            # Saca los dias con mas comentarios #
-            dates_people_talk_more = dates_with_more_comments(lines, literal)
+                # Saca los dias con mas comentarios #
+                dias_con_mas_comentarios = dates_with_more_comments(lineas, dias_numeros)
 
-            dates_comments = cambio_string_numeros(dates_people_talk_more)
+                dates_comments = cambio_string_numeros(dias_con_mas_comentarios)
 
-            # Obtiene el nombre de los usuarios y el string que representa cuando los usuarios hablan  #
-            users_and_when_users_talk = get_users_names(lines)
+                # Obtiene el nombre de los usuarios y el string que representa cuando los usuarios hablan  #
+                usuarios_y_cuando_hablan = get_users_names(lineas)
 
-            # Solo usuarios #
-            solo_users = users_and_when_users_talk[1]
+                # Solo usuarios #
+                solo_users = usuarios_y_cuando_hablan[1]
 
-            # String que representa cuando los usuarios hablan #
-            w_u_t = list(users_and_when_users_talk[0])
+                # String que representa cuando los usuarios hablan #
+                w_u_t = list(usuarios_y_cuando_hablan[0])
 
-            # Numero de veces cuando un usuario habla #
-            user_talks_count = get_users_count_talks(lines, w_u_t)
+                # Numero de veces cuando un usuario habla #
+                user_talks_count = get_users_count_talks(lineas, w_u_t)
 
-            talks = cambio_string_numeros_users(user_talks_count)
+                talks = cambio_string_numeros_users(user_talks_count)
 
-            context = {'dates': dates_comments, 'users': solo_users,
-                                             'talks': talks}
+                context = {'dates': dates_comments, 'users': solo_users, 'talks': talks}
 
-            # Paso el diccionario a formato Json #
-            data = json.dumps(context)
+                # Paso el diccionario a formato Json #
+                data = json.dumps(context)
 
-            return HttpResponse(data, content_type="application/json")
+                return HttpResponse(data, content_type="application/json")
+            else:
+                raise Http404("No File uploaded")
         else:
             raise Http404("No File uploaded")
     else:
@@ -84,7 +77,7 @@ def search_date(lines):
     lista = [line.split(",", 1)[0] for line in lines]
 
     # Crea un regex pattern y lo compila #
-
+    date_pattern = re.compile(r'\b(\d+/\d+/\d{4})\b')
 
     # match the pattern in the list objects and make sure there are no repetitions with set()#
     dates = set(list(filter(date_pattern.match, lista)))
@@ -94,7 +87,7 @@ def search_date(lines):
     fe = list(set([f.strftime("%d/%b/%Y") for f in dates_str]))
     days_sorted = sorted(fe, key=lambda day: datetime.datetime.strptime(day, "%d/%b/%Y"))
     d = [days_sorted, dates]
-    return d
+    return d[1]
 
 
 def get_users_names(lines):
@@ -106,8 +99,7 @@ def get_users_names(lines):
 
     not_user_names = [' - https:']
 
-    # First pattern to look for users when they talk #
-
+    users_pattern = re.compile(r"\s- [^:]+:")
 
     # use the pattern to search for each line #
     match_objects_users = [re.search(users_pattern, m) for m in lines]
@@ -116,7 +108,7 @@ def get_users_names(lines):
     string_objects_users = set([w.group() for w in match_objects_users if w is not None and w.group() not in not_user_names])
 
     # new pattern to be more precise with the names #
-
+    just_user_pattern = re.compile(r"([^:]+)")
 
     # use new pattern #
     just_users_match_objects = [re.search(just_user_pattern, m) for m in string_objects_users]
@@ -200,15 +192,14 @@ def strip_numbers(wut):
     return good_user
 
 
-def cambio_string_numeros(dates_people_talk_more):
+def cambio_string_numeros(dias_con_mas_comentarios):
     lista = []
-    for i in dates_people_talk_more:
+    for i in dias_con_mas_comentarios:
         l = list(i)
         fecha_entera = l[0]
         numero = str(l[1])
         arreglo = fecha_entera + ' - ' + numero + ' mensajes'
         lista.append(arreglo)
-
     return lista
 
 
