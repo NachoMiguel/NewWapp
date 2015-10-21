@@ -401,7 +401,6 @@
 <script type="text/javascript" src="{% static 'wappApp/js/jquery-input-file-text.js' %}"></script>
 <script type="text/javascript" src="{% static 'wappApp/js/custom-js.js' %}"></script>
 <script>
-
     $('form').submit(function(event){
         validated = true;
 
@@ -459,8 +458,6 @@
                         });
                         $("#more_talks").html(more_talks);
                     },
-
-
                  error : function(xhr) {
                         console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
                     }
@@ -468,47 +465,16 @@
        });
 </script>
 <script>
-    $("#right").onclick(function(event){
-       event.preventDefault();
-        var data = new FormData($('form').get(0));
-
+    $("#right").click(function(){
             $.ajax({
-                 type:"POST",
-                 url:"{% url 'do_some_work' %}",
-                 data: data,
-                 processData: false,
-                 contentType: false,
-                 csrfmiddlewaretoken: '{{ csrf_token }}',
-
-                 success: function(data){
-                     $("#dates").html(data.dates);
-                         var dates = "";
-                        $(data.dates).each(function(i, days){
-                            dates += "<li class='list-group-item list-group-item-success'>"+ days +"</li>"
-                        });
-                        $("#dates").html(dates);
-
-                     $("#users").html(data.users);
-                         var users = "";
-                        $(data.users).each(function(i, u){
-                            users += "<li class='list-group-item list-group-item-success'>"+ u +"</li>"
-                        });
-                        $("#users").html(users);
-
-                     $("#more_talks").html(data.talks);
-                         var more_talks = "";
-                        $(data.talks).each(function(i, t){
-                            more_talks += "<li class='list-group-item list-group-item-success'>"+ t +"</li>"
-                        });
-                        $("#more_talks").html(more_talks);
-                    },
-
-
-                 error : function(xhr) {
-                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                    }
+            type:"POST",
+            url:"{% url 'saca_numeros_sacar_palabras' %}",
+            data: {},
+            processData: false,
+            contentType: false,
+            success: function() {console.log("funciono")}
             });
-       });
+    });
 </script>
 </body>
 </html>

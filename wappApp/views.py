@@ -32,15 +32,15 @@ def do_some_work(request):
                 lineas = [linea.decode('utf-8')for linea in lineas_feas]
 
                 # Busca todos los dias en la conversacion, devuelve en este formato: 01/02/2015 #
-                dias_numeros = search_date(lineas)
+                dias_numeros = buscar_dias(lineas)
 
                 # Saca los dias con mas comentarios #
-                dias_con_mas_comentarios = dates_with_more_comments(lineas, dias_numeros)
+                dias_con_mas_comentarios = busca_dias_con_mas_comentarios(lineas, dias_numeros)
 
                 dates_comments = cambio_string_numeros(dias_con_mas_comentarios)
 
                 # Obtiene el nombre de los usuarios y el string que representa cuando los usuarios hablan  #
-                usuarios_y_cuando_hablan = get_users_names(lineas)
+                usuarios_y_cuando_hablan = obtener_nombres_usuarios(lineas)
 
                 # Solo usuarios #
                 solo_users = usuarios_y_cuando_hablan[1]
@@ -58,6 +58,10 @@ def do_some_work(request):
                 # Paso el diccionario a formato Json #
                 data = json.dumps(context)
 
+                c = memcache.Client()
+
+                c.set
+
                 return HttpResponse(data, content_type="application/json")
             else:
                 raise Http404("No File uploaded")
@@ -67,7 +71,7 @@ def do_some_work(request):
         raise Http404("No POST data was given.")
 
 
-def search_date(lines):
+def buscar_dias(lines):
     """
     :param data: la conversacion de wapp
     :return: los dias en que produjeron las conversaciones, dia por dia
@@ -90,7 +94,7 @@ def search_date(lines):
     return d[1]
 
 
-def get_users_names(lines):
+def obtener_nombres_usuarios(lines):
 
     """
     :param data: data del file
@@ -145,7 +149,7 @@ def get_users_count_talks(lines, wut):
     return dict_users.most_common(largo)
 
 
-def dates_with_more_comments(lines, literals):
+def busca_dias_con_mas_comentarios(lines, literals):
     dict_days = Counter()
     r = re.compile(r'\b(\d+/\d+/\d{4})\b')
     for line in lines:
