@@ -58,10 +58,6 @@ def do_some_work(request):
                 # Paso el diccionario a formato Json #
                 data = json.dumps(context)
 
-                c = memcache.Client()
-
-                c.set
-
                 return HttpResponse(data, content_type="application/json")
             else:
                 raise Http404("No File uploaded")
